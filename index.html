@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Kitty Food Carts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fdf2f7;
+        }
+        .hello-kitty-shadow {
+            box-shadow: 0 4px 14px rgba(255, 182, 193, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-pink-100 p-4 fixed w-full top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://images.unsplash.com/photo-1618354691792-d1d42acfd860?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8aGVsbG8ta2l0dHl8fHx8fHwxNzAwNjcyNzQ0&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=50" alt="Logo" class="h-10 w-10 rounded-full">
+                <span class="text-pink-600 font-bold ml-2 text-xl">Food Cart Finder</span>
+            </div>
+            <div class="space-x-4">
+                <button onclick="showLoginForm()" class="bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600">Login</button>
+                <button onclick="showRegistrationForm()" class="bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600">Register</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto mt-20 p-4">
+        <!-- Cart Listings -->
+        <div id="cartListings" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cart cards will be dynamically added here -->
+        </div>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg w-96 hello-kitty-shadow">
+                <h2 class="text-2xl font-bold text-pink-600 mb-4">Login</h2>
+                <form id="loginForm" class="space-y-4">
+                    <input type="email" placeholder="Email" class="w-full p-2 border border-pink-300 rounded" required>
+                    <input type="password" placeholder="Password" class="w-full p-2 border border-pink-300 rounded" required>
+                    <button type="submit" class="w-full bg-pink-500 text-white p-2 rounded-full hover:bg-pink-600">Login</button>
+                </form>
+                <button onclick="hideLoginForm()" class="mt-4 text-pink-500">Close</button>
+            </div>
+        </div>
+
+        <!-- Registration Modal -->
+        <div id="registrationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg w-96 hello-kitty-shadow">
+                <h2 class="text-2xl font-bold text-pink-600 mb-4">Register Your Cart</h2>
+                <form id="registrationForm" class="space-y-4">
+                    <input type="text" placeholder="Cart Name" class="w-full p-2 border border-pink-300 rounded" required>
+                    <input type="email" placeholder="Email" class="w-full p-2 border border-pink-300 rounded" required>
+                    <input type="password" placeholder="Password" class="w-full p-2 border border-pink-300 rounded" required>
+                    <textarea placeholder="Cart Description" class="w-full p-2 border border-pink-300 rounded" required></textarea>
+                    <input type="file" accept="image/*" class="w-full p-2 border border-pink-300 rounded" required>
+                    <button type="submit" class="w-full bg-pink-500 text-white p-2 rounded-full hover:bg-pink-600">Register</button>
+                </form>
+                <button onclick="hideRegistrationForm()" class="mt-4 text-pink-500">Close</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sample cart data
+        const carts = [
+            {
+                name: "Sweet Treats Cart",
+                description: "Delicious desserts and snacks",
+                location: "Central Park",
+                image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500",
+                isActive: true
+            },
+            {
+                name: "Savory Bites",
+                description: "Street food favorites",
+                location: "Downtown Square",
+                image: "https://images.unsplash.com/photo-1565123409695-7b5ef63a2efb?w=500",
+                isActive: false
+            }
+        ];
+
+        // Render cart cards
+        function renderCarts() {
+            const cartListings = document.getElementById('cartListings');
+            cartListings.innerHTML = carts.map(cart => `
+                <div class="bg-white p-6 rounded-lg hello-kitty-shadow">
+                    <img src="${cart.image}" alt="${cart.name}" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold text-pink-600">${cart.name}</h3>
+                    <p class="text-gray-600">${cart.description}</p>
+                    <p class="text-gray-600"><i class="bi bi-geo-alt"></i> ${cart.location}</p>
+                    <div class="mt-4">
+                        <span class="inline-block px-3 py-1 rounded-full ${cart.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                            ${cart.isActive ? 'Active' : 'Inactive'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Modal functions
+        function showLoginForm() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function hideLoginForm() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function showRegistrationForm() {
+            document.getElementById('registrationModal').classList.remove('hidden');
+        }
+
+        function hideRegistrationForm() {
+            document.getElementById('registrationModal').classList.add('hidden');
+        }
+
+        // Form submissions
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add login logic here
+            alert('Login functionality will be implemented here');
+            hideLoginForm();
+        });
+
+        document.getElementById('registrationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add registration logic here
+            alert('Registration functionality will be implemented here');
+            hideRegistrationForm();
+        });
+
+        // Initial render
+        renderCarts();
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
